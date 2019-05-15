@@ -1,5 +1,4 @@
 #include "FuzzyController.h"
-#include "fuzzy_funcs.h"
 
 #include <math.h>
 #include <assert.h>
