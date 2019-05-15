@@ -89,9 +89,6 @@ int Range::pre(float val)
 
 float FuzzyController::centroid(int i, int j)
 {
-    const float v1 = m_ranges[0].at(i);
-    const float v2 = m_ranges[1].at(j);
-
     // Assumption: hits at most 2 MFs
     float h[N][2] = { { 1.F, 1.F }, { 1.F, 1.F }, { 1.F, 1.F } };
     int mf[N][2];
