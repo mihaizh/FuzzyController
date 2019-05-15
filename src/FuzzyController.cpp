@@ -87,6 +87,15 @@ int Range::pre(float val)
     return 0;
 }
 
+FuzzyController::FuzzyController()
+    : m_table(nullptr)
+{
+    for (int i = 0; i < N; ++i)
+    {
+        m_coeffs[i] = 1.F;
+    }
+}
+
 float FuzzyController::centroid(int i, int j)
 {
     // Assumption: hits at most 2 MFs
@@ -171,6 +180,9 @@ void FuzzyController::build()
 
 float FuzzyController::calculate(float v1, float v2)
 {
+    v1 *= m_coeffs[0];
+    v2 *= m_coeffs[1];
+
     const int v1Idx = m_ranges[0].pre(v1);
     const int v2Idx = m_ranges[1].pre(v2);
 
@@ -187,5 +199,5 @@ float FuzzyController::calculate(float v1, float v2)
     const float x21 = m_table[v1Idx + 1][v2Idx];
     const float x22 = m_table[v1Idx + 1][v2Idx + 1];
 
-    return (w11 * x11) + (w12 * x12) + (w21 * x21) + (w22 * x22);
+    return ((w11 * x11) + (w12 * x12) + (w21 * x21) + (w22 * x22)) * m_coeffs[2];
 }

@@ -36,6 +36,7 @@ void runOpenLoop(TfRunner tf, char* argv0)
 // with Fuzzy controller
 void runClosedLoop(TfRunner tf, char* argv0)
 {
+    
     // vars id
     const int e  = 0;
     const int de = 1;
@@ -76,6 +77,7 @@ void runClosedLoop(TfRunner tf, char* argv0)
     controller.setRange(de, de_range);
     controller.setRange(u, u_range);
 
+    // same MFs for every variable
     controller.setMFs(e, mfs);
     controller.setMFs(de, mfs);
     controller.setMFs(u, mfs);
@@ -96,19 +98,24 @@ void runClosedLoop(TfRunner tf, char* argv0)
         }
     }
 
+    const float coeffs[3] = { 1.F, 20.F / 0.0926F, 0.0023F };
+    controller.setCoeffs(coeffs);
+
     const float set_point = 1.F;
     float err = 1.F;
     float derr = 0.F;
+    float cmd = 0.F;
 
     const float Te = 0.1F; // [s]
-    const float runTime = 1000.F; // [s]
+    const float runTime = 2000.F; // [s]
     const int cycles = (int)ceil(runTime / Te);
 
     std::ofstream f2("y2.txt");
     for (int i = 0; i < cycles; ++i)
     {
-        const float u = controller.calculate(err, derr);
-        const float y = tf.step(u);
+        // integral
+        cmd += controller.calculate(err, derr) * Te;
+        const float y = tf.step(cmd);
 
         const float e = set_point - y;
         derr = (e - err) / Te;
@@ -122,7 +129,7 @@ void runClosedLoop(TfRunner tf, char* argv0)
 
     std::ofstream script("plot_closed_loop.m");
     script << "load('" << path.c_str() << "y2.txt');" << std::endl;
-    script << "t=0:0.1:999.9;" << std::endl;
+    script << "t=0:0.1:1999.9;" << std::endl;
     script << "figure" << std::endl;
     script << "hold on" << std::endl;
     script << "grid on" << std::endl;

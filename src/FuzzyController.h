@@ -47,10 +47,13 @@ private:
     RuleVector m_rules;
 
     float** m_table;
+    float m_coeffs[N];
 
     float centroid(int i, int j);
 
 public:
+    FuzzyController();
+
     void setRange(int varIdx, const Range& range)
     {
         m_ranges[varIdx] = range;
@@ -64,6 +67,11 @@ public:
     void setRules(const RuleVector& rules)
     {
         m_rules = rules;
+    }
+
+    void setCoeffs(const float coeffs[N])
+    {
+        memcpy(m_coeffs, coeffs, sizeof(m_coeffs));
     }
 
     void build();
