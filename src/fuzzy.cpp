@@ -116,6 +116,27 @@ void runClosedLoop(TfRunner tf, char* argv0)
 
         f2 << y << std::endl;
     }
+
+    std::string path(argv0);
+    path = path.substr(0U, path.find_last_of('\\') + 1U);
+
+    std::ofstream script("plot_closed_loop.m");
+    script << "load('" << path.c_str() << "y2.txt');" << std::endl;
+    script << "t=0:0.1:999.9;" << std::endl;
+    script << "figure" << std::endl;
+    script << "hold on" << std::endl;
+    script << "grid on" << std::endl;
+    script << "plot(t, y2)" << std::endl;
+
+    std::ofstream script2("plot_surface.m");
+    script2 << "load('" << path.c_str() << "e_de_u.txt');" << std::endl;
+    script2 << "figure" << std::endl;
+    script2 << "hold on" << std::endl;
+    script2 << "grid on" << std::endl;
+    script2 << "plot3(e_de_u(:, 1), e_de_u(:, 2), e_de_u(:, 3), '.')" << std::endl;
+    script2 << "xlabel('e');" << std::endl;
+    script2 << "ylabel('de');" << std::endl;
+    script2 << "zlabel('u');" << std::endl;
 }
 
 // Manually precalculated result!
@@ -146,33 +167,33 @@ void test(TfRunner tf, char* argv0)
 
     // e MFs
     MFVector mfs;  // type,    a,     b,    c,    d
-    mfs.emplace_back(MF_TRAP, -20.F, -20.F, -18.F, -16.F); // NB
-    mfs.emplace_back(MF_TRAP, -18.F, -16.F, -8.5F, -5.5F); // NM
-    mfs.emplace_back(MF_TRAP, -8.5F, -5.5F, -1.F, 0.F); // NS
-    mfs.emplace_back(MF_TRI, -1.F, 0.F, 1.F, 0.F); // ZE
-    mfs.emplace_back(MF_TRAP, 0.F, 1.F, 5.5F, 8.5F); // PS
-    mfs.emplace_back(MF_TRAP, 5.5F, 8.5F, 16.F, 18.F); // PM
-    mfs.emplace_back(MF_TRAP, 16.F, 18.F, 20.F, 20.F); // PB
+    mfs.emplace_back(MF_TRAP, -20.F, -20.F, -18.F, -16.F);  // NB
+    mfs.emplace_back(MF_TRAP, -18.F, -16.F,  -8.5F, -5.5F); // NM
+    mfs.emplace_back(MF_TRAP,  -8.5F, -5.5F, -1.F,   0.F);  // NS
+    mfs.emplace_back(MF_TRI,   -1.F,   0.F,   1.F,   0.F);  // ZE
+    mfs.emplace_back(MF_TRAP,   0.F,   1.F,   5.5F,  8.5F); // PS
+    mfs.emplace_back(MF_TRAP,   5.5F,  8.5F, 16.F,  18.F);  // PM
+    mfs.emplace_back(MF_TRAP,  16.F,  18.F,  20.F,  20.F);  // PB
     controller.setMFs(e, mfs);
 
     mfs.clear();
     mfs.emplace_back(MF_TRAP, -15.F, -15.F, -13.F, -11.F); // NB
-    mfs.emplace_back(MF_TRAP, -13.F, -11.F, -6.F, -4.F); // NM
-    mfs.emplace_back(MF_TRAP, -6.F, -4.F, -0.5F, 0.F); // NS
-    mfs.emplace_back(MF_TRI, -0.5F, 0.F, 0.5F, 0.F); // ZE
-    mfs.emplace_back(MF_TRAP, 0.F, 0.5F, 4.F, 6.F); // PS
-    mfs.emplace_back(MF_TRAP, 4.F, 6.F, 11.F, 13.F); // PM
-    mfs.emplace_back(MF_TRAP, 11.F, 13.F, 15.F, 15.F); // PB
+    mfs.emplace_back(MF_TRAP, -13.F, -11.F,  -6.F,  -4.F); // NM
+    mfs.emplace_back(MF_TRAP,  -6.F,  -4.F,  -0.5F,  0.F); // NS
+    mfs.emplace_back(MF_TRI,   -0.5F,  0.F,   0.5F,  0.F); // ZE
+    mfs.emplace_back(MF_TRAP,   0.F,   0.5F,  4.F,   6.F); // PS
+    mfs.emplace_back(MF_TRAP,   4.F,   6.F,  11.F,  13.F); // PM
+    mfs.emplace_back(MF_TRAP,  11.F,  13.F,  15.F,  15.F); // PB
     controller.setMFs(de, mfs);
 
     mfs.clear();
     mfs.emplace_back(MF_TRAP, -20.F, -20.F, -19.F, -17.F); // NB
-    mfs.emplace_back(MF_TRAP, -19.F, -17.F, -8.F, -7.F); // NM
-    mfs.emplace_back(MF_TRAP, -8.F, -7.F, -1.F, 0.F); // NS
-    mfs.emplace_back(MF_TRI, -1.F, 0.F, 1.F, 0.F); // ZE
-    mfs.emplace_back(MF_TRAP, 0.F, 1.F, 7.F, 8.F); // PS
-    mfs.emplace_back(MF_TRAP, 7.F, 8.F, 17.F, 19.F); // PM
-    mfs.emplace_back(MF_TRAP, 17.F, 19.F, 20.F, 20.F); // PB
+    mfs.emplace_back(MF_TRAP, -19.F, -17.F,  -8.F,  -7.F); // NM
+    mfs.emplace_back(MF_TRAP, -8.F,   -7.F,  -1.F,   0.F); // NS
+    mfs.emplace_back(MF_TRI, - 1.F,    0.F,   1.F,   0.F); // ZE
+    mfs.emplace_back(MF_TRAP,  0.F,    1.F,   7.F,   8.F); // PS
+    mfs.emplace_back(MF_TRAP,  7.F,    8.F,  17.F,  19.F); // PM
+    mfs.emplace_back(MF_TRAP, 17.F,   19.F,  20.F,  20.F); // PB
     controller.setMFs(u, mfs);
 
     RuleVector rules = {
