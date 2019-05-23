@@ -7,8 +7,8 @@ enum MF_TYPE
 {
     MF_NONE,
 
-    MF_TRI,
-    MF_TRAP,
+    MF_TRI,  // triangle membership function
+    MF_TRAP, // trapezoid membership function
 
     MF_NUM
 };
@@ -32,7 +32,7 @@ struct sBasicMF // trimf, trapmf
     float d;
 };
 
-inline float getH(const sBasicMF& mf, float x)
+inline float getHeight(const sBasicMF& mf, float x)
 {
     float val = 0.F;
 
@@ -82,7 +82,7 @@ inline float getH(const sBasicMF& mf, float x)
     return val;
 }
 
-inline float getC(const sBasicMF& mf, float h)
+inline float getCenter(const sBasicMF& mf, float h)
 {
     float val = 0.F;
 

@@ -106,7 +106,7 @@ float FuzzyController<size_t>::center( // Mamdani
             const size_t mf2 = memFuncIdx[1][l];
             const size_t ruleIdx = m_rules[mf1][mf2];
 
-            const float c = getC(m_mfs[2][ruleIdx], minHeight[k][l]);
+            const float c = getCenter(m_mfs[2][ruleIdx], minHeight[k][l]);
 
             num += c * minHeight[k][l];
             den += minHeight[k][l];
@@ -155,7 +155,7 @@ float FuzzyController<RuleType_t>::centroid(int i, int j)
         for (size_t l = 0; l < m_mfs[k].size(); ++l)
         {
             const float v = m_ranges[k].at(ruleIdx);
-            const float h = getH(m_mfs[k][l], v);
+            const float h = getHeight(m_mfs[k][l], v);
 
             if (h > std::numeric_limits<float>::epsilon())
             {
