@@ -33,7 +33,7 @@ Range::Range(float min, float max, size_t N)
 {
     assert((min < max) && "min should be smaller than max");
 
-    m_step = ceil((fabs(min) + fabs(max)) / N);
+    m_step = (fabs(min) + fabs(max)) / N;
     m_data.resize(N);
 
     for (size_t i = 0; i < m_data.size(); ++i)
