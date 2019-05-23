@@ -17,7 +17,7 @@ Range::Range(float min, float max, float step)
 {
     assert((min < max) && "min should be smaller than max");
 
-    const int size = (int)floorf((fabsf(min) + fabs(max)) / step);
+    const int size = (int)floor((fabs(min) + fabs(max)) / step);
     m_data.resize(static_cast<size_t>(size));
 
     for (size_t i = 0U; i < m_data.size(); ++i)
@@ -33,7 +33,7 @@ Range::Range(float min, float max, size_t N)
 {
     assert((min < max) && "min should be smaller than max");
 
-    m_step = ceilf((fabsf(min) + fabs(max)) / N);
+    m_step = ceil((fabs(min) + fabs(max)) / N);
     m_data.resize(N);
 
     for (size_t i = 0; i < m_data.size(); ++i)
@@ -80,7 +80,7 @@ size_t Range::pre(float val)
         return (m_data.size() - 1U);
     }
 
-    const float pos = floorf((val - m_min) / m_step);
+    const float pos = floor((val - m_min) / m_step);
     return static_cast<int>(pos);
 }
 
@@ -231,14 +231,14 @@ float FuzzyController<RuleType_t>::calculate(float v1, float v2)
 
     // compute the weight denominator
     // this could be pre-computed for uniform ranges
-    const float den = fabsf(m_ranges[0].at(v1Idx) - m_ranges[0].at(v1Idx + 1)) *
-        fabsf(m_ranges[1].at(v2Idx) - m_ranges[1].at(v2Idx + 1));
+    const float den = fabs(m_ranges[0].at(v1Idx) - m_ranges[0].at(v1Idx + 1)) *
+        fabs(m_ranges[1].at(v2Idx) - m_ranges[1].at(v2Idx + 1));
 
     // compute weights
-    const float w11 = (fabsf(v1 - m_ranges[0].at(v1Idx + 1)) * fabsf(v2 - m_ranges[1].at(v2Idx + 1))) / den;
-    const float w12 = (fabsf(v1 - m_ranges[0].at(v1Idx))     * fabsf(v2 - m_ranges[1].at(v2Idx + 1))) / den;
-    const float w21 = (fabsf(v1 - m_ranges[0].at(v1Idx + 1)) * fabsf(v2 - m_ranges[1].at(v2Idx)))     / den;
-    const float w22 = (fabsf(v1 - m_ranges[0].at(v1Idx))     * fabsf(v2 - m_ranges[1].at(v2Idx)))     / den;
+    const float w11 = (fabs(v1 - m_ranges[0].at(v1Idx + 1)) * fabs(v2 - m_ranges[1].at(v2Idx + 1))) / den;
+    const float w12 = (fabs(v1 - m_ranges[0].at(v1Idx))     * fabs(v2 - m_ranges[1].at(v2Idx + 1))) / den;
+    const float w21 = (fabs(v1 - m_ranges[0].at(v1Idx + 1)) * fabs(v2 - m_ranges[1].at(v2Idx)))     / den;
+    const float w22 = (fabs(v1 - m_ranges[0].at(v1Idx))     * fabs(v2 - m_ranges[1].at(v2Idx)))     / den;
 
     // values from the Mamdani table
     const float x11 = m_table[v1Idx][v2Idx];
