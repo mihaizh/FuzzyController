@@ -236,8 +236,8 @@ float FuzzyController<RuleType_t>::calculate(float v1, float v2)
 
     // compute weights
     const float w11 = (fabs(v1 - m_ranges[0].at(v1Idx + 1)) * fabs(v2 - m_ranges[1].at(v2Idx + 1))) / den;
-    const float w12 = (fabs(v1 - m_ranges[0].at(v1Idx))     * fabs(v2 - m_ranges[1].at(v2Idx + 1))) / den;
-    const float w21 = (fabs(v1 - m_ranges[0].at(v1Idx + 1)) * fabs(v2 - m_ranges[1].at(v2Idx)))     / den;
+    const float w12 = (fabs(v1 - m_ranges[0].at(v1Idx + 1)) * fabs(v2 - m_ranges[1].at(v2Idx)))     / den;
+    const float w21 = (fabs(v1 - m_ranges[0].at(v1Idx))     * fabs(v2 - m_ranges[1].at(v2Idx + 1))) / den;
     const float w22 = (fabs(v1 - m_ranges[0].at(v1Idx))     * fabs(v2 - m_ranges[1].at(v2Idx)))     / den;
 
     // values from the Mamdani table
