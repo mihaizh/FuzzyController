@@ -85,7 +85,7 @@ public:
     void setCoeffs(const std::vector<float>& coeffs)
     {
         assert((coeffs.size() <= N) &&
-            "Number of scaling coefficients has to be lower than number of variables.");
+            "Number of scaling coefficients has to be lower or equal to number of variables.");
 
         std::copy(coeffs.begin(), coeffs.end(), m_coeffs.begin());
     }

@@ -58,6 +58,7 @@ Range& Range::operator=(const Range& other)
         m_max = other.m_max;
         m_step = other.m_step;
 
+        m_data.clear();
         std::copy(
             other.m_data.begin(),
             other.m_data.end(),
