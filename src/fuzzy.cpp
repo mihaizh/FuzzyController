@@ -36,18 +36,17 @@ void runOpenLoop(TfRunner tf, char* argv0)
 // with Fuzzy controller
 void runClosedLoop(TfRunner tf, char* argv0)
 {
-    
     // vars id
-    const int e  = 0;
-    const int de = 1;
-    const int u  = 2;
+    const size_t e  = 0;
+    const size_t de = 1;
+    const size_t u  = 2;
 
     // MFs id
-    const int NB = 0;
-    const int NS = 1;
-    const int ZE = 2;
-    const int PS = 3;
-    const int PB = 4;
+    const size_t NB = 0;
+    const size_t NS = 1;
+    const size_t ZE = 2;
+    const size_t PS = 3;
+    const size_t PB = 4;
 
     // var ranges
     //                   min, max, step
@@ -63,7 +62,7 @@ void runClosedLoop(TfRunner tf, char* argv0)
     mfs.emplace_back(MF_TRI,  0.F,   0.5F, 1.F,  0.F); // PS
     mfs.emplace_back(MF_TRI,  0.5F,  1.F,  1.5F, 0.F); // PB
 
-    RuleVector rules = {
+    MamdaniRuleVector rules = {
         //de is { NB, NS, ZE, PS, PB }
                 { NB, NB, NS, NS, NS }, // e is NB
                 { NS, NS, NS, NS, ZE }, // e is NS
@@ -72,7 +71,7 @@ void runClosedLoop(TfRunner tf, char* argv0)
                 { PS, PS, PS, PB, PB }  // e is PB
     };
 
-    FuzzyController controller;
+    MamdaniFuzzyController controller;
     controller.setRange(e, e_range);
     controller.setRange(de, de_range);
     controller.setRange(u, u_range);
@@ -98,7 +97,7 @@ void runClosedLoop(TfRunner tf, char* argv0)
         }
     }
 
-    const float coeffs[3] = { 1.F, 20.F / 0.0926F, 0.0023F };
+    const std::vector<float> coeffs = { 1.F, 20.F / 0.0926F, 0.0023F };
     controller.setCoeffs(coeffs);
 
     const float set_point = 1.F;
@@ -151,18 +150,18 @@ void runClosedLoop(TfRunner tf, char* argv0)
 void test(TfRunner tf, char* argv0)
 {
     // vars id
-    const int e = 0;
-    const int de = 1;
-    const int u = 2;
+    const size_t e = 0;
+    const size_t de = 1;
+    const size_t u = 2;
 
     // MFs id
-    const int NB = 0;
-    const int NM = 1;
-    const int NS = 2;
-    const int ZE = 3;
-    const int PS = 4;
-    const int PM = 5;
-    const int PB = 6;
+    const size_t NB = 0;
+    const size_t NM = 1;
+    const size_t NS = 2;
+    const size_t ZE = 3;
+    const size_t PS = 4;
+    const size_t PM = 5;
+    const size_t PB = 6;
 
     // var ranges
     //                   min, max, step
@@ -170,7 +169,7 @@ void test(TfRunner tf, char* argv0)
     const Range de_range(-13.F, 13.F, 0.1F);
     const Range u_range(-19.F, 19.F, 0.1F);
 
-    FuzzyController controller;
+    MamdaniFuzzyController controller;
 
     // e MFs
     MFVector mfs;  // type,    a,     b,    c,    d
@@ -203,7 +202,7 @@ void test(TfRunner tf, char* argv0)
     mfs.emplace_back(MF_TRAP, 17.F,   19.F,  20.F,  20.F); // PB
     controller.setMFs(u, mfs);
 
-    RuleVector rules = {
+    MamdaniRuleVector rules = {
         //de is { NB, NM, NS, ZE, PS, PM, PB }
                 { PB, PM, PS, ZE, NS, NS, NS }, // e is NB
                 { PB, PM, PS, ZE, NS, NS, NS }, // e is NM
